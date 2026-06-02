@@ -1,15 +1,32 @@
 import { SourceFile, SyntaxKind, TypeNode } from "ts-morph";
 
-// Only generate these interfaces as Dart models
-const INCLUDE_INTERFACES = new Set([
-  "User",
-  "Media",
-  "Page",
-  "PayloadKv",
-  "PayloadLockedDocument",
-  "PayloadPreference",
-  "PayloadMigration",
-]);
+/**
+ * Reads Config.collections and Config.globals to discover which TS interfaces
+ * should be generated as Dart models. Returns a set of TS interface names.
+ */
+function extractIncludedInterfaces(sourceFile: SourceFile): Set<string> {
+  const included = new Set<string>();
+  const configIface = sourceFile.getInterface("Config");
+  if (!configIface) return included;
+
+  for (const sectionName of ["collections", "globals"]) {
+    const prop = configIface.getProperty(sectionName);
+    if (!prop) continue;
+    const typeNode = prop.getTypeNode();
+    if (!typeNode || typeNode.getKind() !== SyntaxKind.TypeLiteral) continue;
+    const typeLiteral = typeNode.asKindOrThrow(SyntaxKind.TypeLiteral);
+    for (const memberProp of typeLiteral.getProperties()) {
+      const memberType = memberProp.getTypeNode();
+      if (!memberType) continue;
+      if (memberType.getKind() === SyntaxKind.TypeReference) {
+        const ref = memberType.asKindOrThrow(SyntaxKind.TypeReference);
+        included.add(ref.getTypeName().getText());
+      }
+    }
+  }
+
+  return included;
+}
 
 export interface DartField {
   dartName: string; // Dart field name (camelCase)
@@ -23,7 +40,10 @@ export interface DartClass {
   fields: DartField[];
 }
 
-function convertTypeNode(node: TypeNode): { type: string; nullable: boolean } {
+function convertTypeNode(
+  node: TypeNode,
+  included: Set<string>,
+): { type: string; nullable: boolean } {
   const kind = node.getKind();
 
   switch (kind) {
@@ -50,6 +70,7 @@ function convertTypeNode(node: TypeNode): { type: string; nullable: boolean } {
     case SyntaxKind.ParenthesizedType:
       return convertTypeNode(
         node.asKindOrThrow(SyntaxKind.ParenthesizedType).getTypeNode(),
+        included,
       );
 
     case SyntaxKind.UnionType: {
@@ -69,7 +90,7 @@ function convertTypeNode(node: TypeNode): { type: string; nullable: boolean } {
       const nonNull = types.filter((t) => !isNullish(t));
 
       if (nonNull.length === 1) {
-        const inner = convertTypeNode(nonNull[0]);
+        const inner = convertTypeNode(nonNull[0], included);
         return { type: inner.type, nullable: inner.nullable || hasNull };
       }
       // Multiple non-null types (e.g. number | User) → dynamic
@@ -78,7 +99,7 @@ function convertTypeNode(node: TypeNode): { type: string; nullable: boolean } {
 
     case SyntaxKind.ArrayType: {
       const arr = node.asKindOrThrow(SyntaxKind.ArrayType);
-      const elem = convertTypeNode(arr.getElementTypeNode());
+      const elem = convertTypeNode(arr.getElementTypeNode(), included);
       const elemStr = elem.nullable ? `${elem.type}?` : elem.type;
       return { type: `List<${elemStr}>`, nullable: false };
     }
@@ -96,8 +117,8 @@ function convertTypeNode(node: TypeNode): { type: string; nullable: boolean } {
     case SyntaxKind.TypeReference: {
       const ref = node.asKindOrThrow(SyntaxKind.TypeReference);
       const name = ref.getTypeName().getText();
-      if (INCLUDE_INTERFACES.has(name)) {
-        return { type: name, nullable: false };
+      if (included.has(name)) {
+        return { type: `${name}Model`, nullable: false };
       }
       return { type: "dynamic", nullable: true };
     }
@@ -113,11 +134,12 @@ function toDartName(tsName: string): string {
 }
 
 export function parseInterfaces(sourceFile: SourceFile): DartClass[] {
+  const included = extractIncludedInterfaces(sourceFile);
   const classes: DartClass[] = [];
 
   for (const iface of sourceFile.getInterfaces()) {
     const name = iface.getName();
-    if (!INCLUDE_INTERFACES.has(name)) continue;
+    if (!included.has(name)) continue;
     if (iface.getTypeParameters().length > 0) continue; // skip generic interfaces
 
     const fields: DartField[] = [];
@@ -131,7 +153,7 @@ export function parseInterfaces(sourceFile: SourceFile): DartClass[] {
       let isNullable: boolean;
 
       if (typeNode) {
-        const result = convertTypeNode(typeNode);
+        const result = convertTypeNode(typeNode, included);
         dartType = result.type;
         isNullable = result.nullable || isOptional;
       } else {
@@ -147,7 +169,7 @@ export function parseInterfaces(sourceFile: SourceFile): DartClass[] {
       });
     }
 
-    classes.push({ name, fields });
+    classes.push({ name: `${name}Model`, fields });
   }
 
   return classes;
