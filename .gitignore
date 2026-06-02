@@ -1,24 +1,24 @@
 # APP
 
 # Miscellaneous
-app/*.class
-app/*.log
-app/*.pyc
-app/*.swp
-app/.DS_Store
-app/.atom/
-app/.build/
-app/.buildlog/
-app/.history
-app/.svn/
-app/.swiftpm/
-app/migrate_working_dir/
+apps/app/*.class
+apps/app/*.log
+apps/app/*.pyc
+apps/app/*.swp
+apps/app/.DS_Store
+apps/app/.atom/
+apps/app/.build/
+apps/app/.buildlog/
+apps/app/.history
+apps/app/.svn/
+apps/app/.swiftpm/
+apps/app/migrate_working_dir/
 
 # IntelliJ related
-app/*.iml
-app/*.ipr
-app/*.iws
-app/.idea/
+apps/app/*.iml
+apps/app/*.ipr
+apps/app/*.iws
+apps/app/.idea/
 
 # The .vscode folder contains launch configuration and tasks you configure in
 # VS Code which you may wish to be included in version control, so this line is
@@ -26,54 +26,56 @@ app/.idea/
 #.vscode/
 
 # Flutter/Dart/Pub related
-app/**/doc/api/
-app/**/ios/Flutter/.last_build_id
-app/.dart_tool/
-app/.flutter-plugins-dependencies
-app/.pub-cache/
-app/.pub/
-app/build/
-app/coverage/
+apps/app/**/doc/api/
+apps/app/**/ios/Flutter/.last_build_id
+apps/app/.dart_tool/
+apps/app/.flutter-plugins-dependencies
+apps/app/.pub-cache/
+apps/app/.pub/
+apps/app/build/
+apps/app/coverage/
 
 # Symbolication related
-app/app.*.symbols
+apps/app/app.*.symbols
 
 # Obfuscation related
-app/app.*.map.json
+apps/app/app.*.map.json
 
 # Android Studio will place build artifacts here
-app/android/app/debug
-app/android/app/profile
-app/android/app/release
+apps/app/android/app/debug
+apps/app/android/app/profile
+apps/app/android/app/release
 
 
 
 # BACKEND
 
-backend/build/
-backend/dist/
-backend/media/
-backend/node_modules/
-backend/.DS_Store
-backend/.env
-backend/.next/
-backend/next-env.d.ts
-backend/.vercel/
+apps/backend/build/
+apps/backend/dist/
+apps/backend/media/
+apps/backend/node_modules/
+apps/backend/.DS_Store
+apps/backend/.env
+apps/backend/.next/
+apps/backend/next-env.d.ts
+apps/backend/.vercel/
 
 # Payload default media upload directory
-backend/public/media/
+apps/backend/public/media/
 
-backend/public/robots.txt
-backend/public/sitemap*.xml
+apps/backend/public/robots.txt
+apps/backend/public/sitemap*.xml
 
 # Playwright
-backend/test-results/
-backend/playwright-report/
-backend/blob-report/
-backend/playwright/.cache/
+apps/backend/test-results/
+apps/backend/playwright-report/
+apps/backend/blob-report/
+apps/backend/playwright/.cache/
 
 
 
 # ALL
 
-backend/.env
+apps/backend/.env
+node_modules/
+.turbo/

@@ -1,0 +1,13 @@
+{
+  "name": "@news-blog/app",
+  "private": true,
+  "scripts": {
+    "dev": "flutter run -d linux",
+    "build:linux": "flutter build linux",
+    "build:android": "flutter build android",
+    "build:ios": "flutter build ios",
+    "build": "build:linux && build:android && build:ios",
+    "test": "flutter test",
+    "lint": "flutter analyze"
+  }
+}
