@@ -4,9 +4,9 @@
   "scripts": {
     "dev": "flutter run -d linux",
     "build:linux": "flutter build linux",
-    "build:android": "flutter build android",
+    "build:android": "flutter build apk",
     "build:ios": "flutter build ios",
-    "build": "build:linux && build:android && build:ios",
+    "build": "flutter build linux && flutter build apk",
     "test": "flutter test",
     "lint": "flutter analyze"
   }
