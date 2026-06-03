@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:news_blog/pages/home.dart';
+import 'package:news_blog/routing/index.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,10 +11,12 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       title: 'News Blog',
-      theme: ThemeData(colorScheme: .fromSeed(seedColor: Colors.deepPurple)),
-      home: const MyHomePage(title: 'News Blog Home Page'),
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+      ),
+      routerConfig: router,
     );
   }
 }
