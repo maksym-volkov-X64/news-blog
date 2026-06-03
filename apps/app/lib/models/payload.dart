@@ -4,8 +4,9 @@
 
 // ignore_for_file: non_constant_identifier_names
 
-class User {
+class UserModel {
   final int id;
+  final List<dynamic>? roles;
   final String updatedAt;
   final String createdAt;
   final bool? enableAPIKey;
@@ -22,8 +23,9 @@ class User {
   final String? password;
   final String collection;
 
-  const User({
+  const UserModel({
     required this.id,
+    this.roles,
     required this.updatedAt,
     required this.createdAt,
     this.enableAPIKey,
@@ -41,8 +43,9 @@ class User {
     required this.collection,
   });
 
-  factory User.fromJson(Map<String, dynamic> json) => User(
+  factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
     id: (json['id'] as num).toInt(),
+    roles: json['roles'] != null ? List<dynamic>.from(json['roles'] as List) : null,
     updatedAt: json['updatedAt'] as String,
     createdAt: json['createdAt'] as String,
     enableAPIKey: json['enableAPIKey'] as bool?,
@@ -62,6 +65,7 @@ class User {
 
   Map<String, dynamic> toJson() => {
     'id': id,
+    'roles': roles,
     'updatedAt': updatedAt,
     'createdAt': createdAt,
     'enableAPIKey': enableAPIKey,
@@ -80,7 +84,7 @@ class User {
   };
 }
 
-class Media {
+class MediaModel {
   final int id;
   final String alt;
   final String? prefix;
@@ -97,7 +101,7 @@ class Media {
   final int? focalY;
   final Map<String, dynamic>? sizes;
 
-  const Media({
+  const MediaModel({
     required this.id,
     required this.alt,
     this.prefix,
@@ -115,7 +119,7 @@ class Media {
     this.sizes,
   });
 
-  factory Media.fromJson(Map<String, dynamic> json) => Media(
+  factory MediaModel.fromJson(Map<String, dynamic> json) => MediaModel(
     id: (json['id'] as num).toInt(),
     alt: json['alt'] as String,
     prefix: json['prefix'] as String?,
@@ -152,14 +156,14 @@ class Media {
   };
 }
 
-class Page {
+class PageModel {
   final int id;
   final String title;
   final dynamic media;
   final String updatedAt;
   final String createdAt;
 
-  const Page({
+  const PageModel({
     required this.id,
     required this.title,
     required this.media,
@@ -167,7 +171,7 @@ class Page {
     required this.createdAt,
   });
 
-  factory Page.fromJson(Map<String, dynamic> json) => Page(
+  factory PageModel.fromJson(Map<String, dynamic> json) => PageModel(
     id: (json['id'] as num).toInt(),
     title: json['title'] as String,
     media: json['media'],
@@ -184,18 +188,18 @@ class Page {
   };
 }
 
-class PayloadKv {
+class PayloadKvModel {
   final int id;
   final String key;
   final dynamic? data;
 
-  const PayloadKv({
+  const PayloadKvModel({
     required this.id,
     required this.key,
     this.data,
   });
 
-  factory PayloadKv.fromJson(Map<String, dynamic> json) => PayloadKv(
+  factory PayloadKvModel.fromJson(Map<String, dynamic> json) => PayloadKvModel(
     id: (json['id'] as num).toInt(),
     key: json['key'] as String,
     data: json['data'],
@@ -208,7 +212,7 @@ class PayloadKv {
   };
 }
 
-class PayloadLockedDocument {
+class PayloadLockedDocumentModel {
   final int id;
   final dynamic? document;
   final String? globalSlug;
@@ -216,7 +220,7 @@ class PayloadLockedDocument {
   final String updatedAt;
   final String createdAt;
 
-  const PayloadLockedDocument({
+  const PayloadLockedDocumentModel({
     required this.id,
     this.document,
     this.globalSlug,
@@ -225,7 +229,7 @@ class PayloadLockedDocument {
     required this.createdAt,
   });
 
-  factory PayloadLockedDocument.fromJson(Map<String, dynamic> json) => PayloadLockedDocument(
+  factory PayloadLockedDocumentModel.fromJson(Map<String, dynamic> json) => PayloadLockedDocumentModel(
     id: (json['id'] as num).toInt(),
     document: json['document'],
     globalSlug: json['globalSlug'] as String?,
@@ -244,7 +248,7 @@ class PayloadLockedDocument {
   };
 }
 
-class PayloadPreference {
+class PayloadPreferenceModel {
   final int id;
   final Map<String, dynamic> user;
   final String? key;
@@ -252,7 +256,7 @@ class PayloadPreference {
   final String updatedAt;
   final String createdAt;
 
-  const PayloadPreference({
+  const PayloadPreferenceModel({
     required this.id,
     required this.user,
     this.key,
@@ -261,7 +265,7 @@ class PayloadPreference {
     required this.createdAt,
   });
 
-  factory PayloadPreference.fromJson(Map<String, dynamic> json) => PayloadPreference(
+  factory PayloadPreferenceModel.fromJson(Map<String, dynamic> json) => PayloadPreferenceModel(
     id: (json['id'] as num).toInt(),
     user: Map<String, dynamic>.from(json['user'] as Map),
     key: json['key'] as String?,
@@ -280,14 +284,14 @@ class PayloadPreference {
   };
 }
 
-class PayloadMigration {
+class PayloadMigrationModel {
   final int id;
   final String? name;
   final int? batch;
   final String updatedAt;
   final String createdAt;
 
-  const PayloadMigration({
+  const PayloadMigrationModel({
     required this.id,
     this.name,
     this.batch,
@@ -295,7 +299,7 @@ class PayloadMigration {
     required this.createdAt,
   });
 
-  factory PayloadMigration.fromJson(Map<String, dynamic> json) => PayloadMigration(
+  factory PayloadMigrationModel.fromJson(Map<String, dynamic> json) => PayloadMigrationModel(
     id: (json['id'] as num).toInt(),
     name: json['name'] as String?,
     batch: (json['batch'] as num?)?.toInt(),

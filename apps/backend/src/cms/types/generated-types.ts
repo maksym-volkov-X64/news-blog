@@ -125,6 +125,7 @@ export interface UserAuthOperations {
  */
 export interface User {
   id: number;
+  roles?: ('root' | 'admin' | 'content-manager' | 'customer')[] | null;
   updatedAt: string;
   createdAt: string;
   enableAPIKey?: boolean | null;
@@ -311,6 +312,7 @@ export interface PayloadMigration {
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
+  roles?: T;
   updatedAt?: T;
   createdAt?: T;
   enableAPIKey?: T;

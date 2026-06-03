@@ -2,12 +2,13 @@
   "name": "@news-blog/app",
   "private": true,
   "scripts": {
-    "dev": "flutter run -d linux",
+    "dev": "flutter pub run build_runner build --delete-conflicting-outputs &&flutter run -d linux",
     "build:linux": "flutter build linux",
     "build:android": "flutter build apk",
     "build:ios": "flutter build ios",
-    "build": "flutter build linux && flutter build apk",
+    "build": "flutter pub run build_runner build --delete-conflicting-outputs && flutter build linux && flutter build apk",
     "test": "flutter test",
-    "lint": "flutter analyze"
+    "lint": "flutter analyze",
+    "generate:env": "flutter pub run build_runner build --delete-conflicting-outputs"
   }
 }

@@ -46,6 +46,9 @@ apps/app/android/app/debug
 apps/app/android/app/profile
 apps/app/android/app/release
 
+# Environment files
+apps/app/lib/env/env.g.dart
+
 
 
 # BACKEND
@@ -76,6 +79,6 @@ apps/backend/playwright/.cache/
 
 # ALL
 
-apps/backend/.env
+apps/**/.env
 node_modules/
 .turbo/

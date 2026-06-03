@@ -4,12 +4,12 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 import sharp from 'sharp'
 
-import { Users } from './src/cms/collections/Users'
-import { Media } from './src/cms/collections/Media'
+import { Users } from '@/cms/collections/Users'
+import { Media } from '@/cms/collections/Media'
 import { buildConfig, CollectionConfig, Config, ImageSize } from 'payload'
 import { nodemailerAdapter } from '@payloadcms/email-nodemailer'
 import { s3Storage } from '@payloadcms/storage-s3'
-import { Pages } from '@/cms/collections/pages'
+import { Pages } from '@/cms/collections/Pages'
 
 type GenerateFileURL = (args: {
   collection: CollectionConfig

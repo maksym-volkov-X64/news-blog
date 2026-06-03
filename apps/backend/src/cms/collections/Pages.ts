@@ -1,9 +1,16 @@
 import type { CollectionConfig } from 'payload'
+import { anyAdminAccess, anyAdminOrSignedInAccess } from '../access'
 
 export const Pages: CollectionConfig = {
   slug: 'pages',
   admin: {
     useAsTitle: 'title',
+  },
+  access: {
+    read: anyAdminOrSignedInAccess,
+    create: anyAdminAccess,
+    update: anyAdminAccess,
+    delete: anyAdminAccess,
   },
   fields: [
     {

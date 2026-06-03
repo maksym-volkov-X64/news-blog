@@ -1,4 +1,5 @@
 import type { CollectionConfig } from 'payload'
+import { anyAdminAccess, anyAdminOrSignedInAccess } from '../access'
 
 export const defaultPhotoMimeTypes = [
   'image/jpeg',
@@ -27,7 +28,10 @@ export const productMediaMimeTypes = [...defaultGraphicsMimeTypes, 'video/webm']
 export const Media: CollectionConfig = {
   slug: 'media',
   access: {
-    read: () => true,
+    read: anyAdminOrSignedInAccess,
+    create: anyAdminAccess,
+    update: anyAdminAccess,
+    delete: anyAdminAccess,
   },
   upload: {
     mimeTypes: [...defaultGraphicsMimeTypes, 'application/pdf', 'image/gif'],
