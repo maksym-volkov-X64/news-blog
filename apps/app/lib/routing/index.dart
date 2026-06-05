@@ -7,12 +7,14 @@ final GoRouter router = GoRouter(
   routes: [
     GoRoute(
       path: "/",
+      name: 'home',
       builder: (context, state) => const MyHomePage(title: 'News Blog Home'),
     ),
     GoRoute(
-      path: '/post/:id',
+      path: '/post/:id/:title',
+      name: 'post',
       builder: (context, state) => PostPage(
-        title: 'page ${state.pathParameters['id']}',
+        title: state.pathParameters['title'] ?? '',
         postId: state.pathParameters['id']!,
       ),
     ),

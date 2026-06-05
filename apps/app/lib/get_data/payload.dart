@@ -3,8 +3,8 @@ import 'package:news_blog/env/env.dart';
 import 'package:news_blog/models/payload.dart';
 
 class PayloadClient {
-  final Options options = _getOptions();
-  final String apiUrl = _getApiUrl();
+  final Options _options = _getOptions();
+  final String _apiUrl = _getApiUrl();
 
   static Options _getOptions() {
     String apiKey = Env.payloadApiKey;
@@ -19,7 +19,7 @@ class PayloadClient {
 
   Future<List<PageModel>> getPages() async {
     try {
-      Response response = await Dio().get('$apiUrl/pages', options: options);
+      Response response = await Dio().get('$_apiUrl/pages', options: _options);
 
       return (response.data['docs'] as List)
           .map<PageModel>((page) => PageModel.fromJson(page))
@@ -36,8 +36,8 @@ class PayloadClient {
 
     try {
       Response response = await Dio().get(
-        '$apiUrl/pages/$id',
-        options: options,
+        '$_apiUrl/pages/$id',
+        options: _options,
       );
 
       return PageModel.fromJson(response.data);
