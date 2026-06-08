@@ -23,10 +23,14 @@ class _PostPageState extends State<PostPage> {
         title: Text(
           '${AppLocale.appTitle.getString(context)} - ${widget.title.toUpperCase()}',
         ),
-        title: Text('News Blog - ${widget.title.toUpperCase()}'),
-        centerTitle: true,
         leading: IconButton(
-          onPressed: () => GoRouter.of(context).go('/'),
+          onPressed: () {
+            if (GoRouter.of(context).canPop()) {
+              GoRouter.of(context).pop();
+            } else {
+              GoRouter.of(context).go('/');
+            }
+          },
           icon: const Icon(Icons.arrow_back),
         ),
         actions: [

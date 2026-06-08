@@ -35,7 +35,7 @@ Widget _pageItem({required PageModel page, required BuildContext context}) {
 
   return MaterialButton(
     onPressed: () {
-      GoRouter.of(context).goNamed(
+      GoRouter.of(context).pushNamed(
         'post',
         pathParameters: {'id': page.id.toString(), 'title': page.title},
       );
