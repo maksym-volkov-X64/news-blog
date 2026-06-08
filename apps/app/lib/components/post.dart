@@ -1,17 +1,25 @@
+import 'package:news_blog/components/lexical_renderer.dart';
 import 'package:news_blog/get_data/payload.dart';
 import 'package:news_blog/models/payload.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
+import 'package:news_blog/i18n/i18n.dart';
 
-FutureBuilder page(String? id) {
+FutureBuilder postWidget(String? id) {
   return FutureBuilder(
-    future: PayloadClient().getPage(id),
+    future: PayloadClient().getPost(id),
     builder: (context, snapshot) {
       if (snapshot.connectionState == ConnectionState.done) {
         if (snapshot.hasError || snapshot.data == null) {
-          return const Center(child: Text('Failed to load page'));
+          return Center(
+            child: Text(
+              AppLocale.failedToLoadPost.getString(context),
+              style: const TextStyle(fontSize: 18),
+            ),
+          );
         }
 
-        final PageModel page = snapshot.data!;
+        final PostModel page = snapshot.data!;
         MediaModel media = MediaModel.fromJson(page.media);
 
         return Column(
@@ -32,11 +40,15 @@ FutureBuilder page(String? id) {
                 ),
               ),
             ),
-            // Image(image: NetworkImage(media.url ?? ''), fit: BoxFit.cover),
+
+            SizedBox(height: 10),
+
             Text(
               page.title.toUpperCase(),
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
+
+            SizedBox(height: 20),
           ],
         );
       } else {

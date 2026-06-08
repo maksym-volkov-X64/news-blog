@@ -8,4 +8,7 @@ mixin AppLocale {
   static const String pages = 'pages';
   static const String page = 'page';
   static const String home = 'home';
+  static const String failedToLoadPosts = 'failedToLoadPosts';
+  static const String failedToLoadPost = 'failedToLoadPost';
+  static const String failedToLoadImage = 'failedToLoadImage';
 }

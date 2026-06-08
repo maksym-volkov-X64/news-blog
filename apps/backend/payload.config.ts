@@ -3,13 +3,15 @@ import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import sharp from 'sharp'
+import { en } from 'payload/i18n/en'
+import { uk } from 'payload/i18n/uk'
 
 import { Users } from '@/cms/collections/Users'
 import { Media } from '@/cms/collections/Media'
 import { buildConfig, CollectionConfig, Config, ImageSize } from 'payload'
 import { nodemailerAdapter } from '@payloadcms/email-nodemailer'
 import { s3Storage } from '@payloadcms/storage-s3'
-import { Pages } from '@/cms/collections/Pages'
+import { Posts } from '@/cms/collections/Posts'
 
 type GenerateFileURL = (args: {
   collection: CollectionConfig
@@ -34,7 +36,7 @@ const payloadConfig: Config = {
   cookiePrefix: 'news-blog',
   cors: [process.env.NEXT_PUBLIC_SITE_URL || ''].filter(Boolean),
   csrf: [process.env.NEXT_PUBLIC_SITE_URL || ''].filter(Boolean),
-  collections: [Users, Media, Pages],
+  collections: [Users, Media, Posts],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
@@ -57,6 +59,33 @@ const payloadConfig: Config = {
     },
   }),
   sharp,
+  i18n: {
+    supportedLanguages: { en, uk },
+    translations: {
+      en: {
+        general: {
+          payloadSettings: 'News Blog CMS Settings',
+        },
+        validation: {
+          invalidUrl: 'Invalid URL',
+        },
+      },
+      uk: {
+        general: {
+          payloadSettings: 'Налаштування News Blog CMS',
+          loading: 'Завантаження',
+        },
+        validation: {
+          invalidUrl: 'Невалідне посилання',
+        },
+      },
+    },
+  },
+  localization: {
+    defaultLocale: 'en',
+    fallback: false,
+    locales: ['en', 'uk'],
+  },
   plugins: [
     s3Storage({
       bucket: process.env.S3_BUCKET_NAME || '',

@@ -12,6 +12,16 @@ const isNotDev = process.env.NODE_ENV !== 'development'
 
 export const Users: CollectionConfig = {
   slug: 'users',
+  labels: {
+    singular: {
+      en: 'User',
+      uk: 'Користувач',
+    },
+    plural: {
+      en: 'Users',
+      uk: 'Користувачі',
+    },
+  },
   admin: {
     useAsTitle: 'email',
   },

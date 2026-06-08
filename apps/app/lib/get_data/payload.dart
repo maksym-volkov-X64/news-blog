@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:news_blog/env/env.dart';
 import 'package:news_blog/models/payload.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 
 class PayloadClient {
   final Options _options = _getOptions();
@@ -17,32 +18,43 @@ class PayloadClient {
     return Env.payloadApiUrl;
   }
 
-  Future<List<PageModel>> getPages() async {
+  String _getLanguageCode() {
+    return FlutterLocalization.instance.currentLocale?.languageCode ?? 'en';
+  }
+
+  Future<List<PostModel>> getPosts() async {
+    final String languageCode = _getLanguageCode();
+
     try {
-      Response response = await Dio().get('$_apiUrl/pages', options: _options);
+      Response response = await Dio().get(
+        '$_apiUrl/posts?locale=$languageCode',
+        options: _options,
+      );
 
       return (response.data['docs'] as List)
-          .map<PageModel>((page) => PageModel.fromJson(page))
+          .map<PostModel>((page) => PostModel.fromJson(page))
           .toList();
     } catch (e) {
-      print('Error fetching pages: $e');
+      print('Error fetching posts: $e');
 
       return [];
     }
   }
 
-  Future<PageModel?> getPage(String? id) async {
+  Future<PostModel?> getPost(String? id) async {
     if (id == null) return null;
+
+    final String languageCode = _getLanguageCode();
 
     try {
       Response response = await Dio().get(
-        '$_apiUrl/pages/$id',
+        '$_apiUrl/posts/$id?locale=$languageCode',
         options: _options,
       );
 
-      return PageModel.fromJson(response.data);
+      return PostModel.fromJson(response.data);
     } catch (e) {
-      print('Error fetching page: $e');
+      print('Error fetching post: $e');
 
       return null;
     }

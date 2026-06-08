@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:news_blog/components/pages.dart';
+import 'package:news_blog/components/posts.dart';
 import 'package:news_blog/i18n/i18n.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 
@@ -35,7 +35,7 @@ class _MyHomePageState extends State<MyHomePage> {
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 30),
-            Expanded(child: pages()),
+            Expanded(child: postsWidget()),
           ],
         ),
       ),

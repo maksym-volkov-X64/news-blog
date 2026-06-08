@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:news_blog/components/page.dart';
+import 'package:news_blog/components/post.dart';
 import 'package:news_blog/i18n/i18n.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 
@@ -46,7 +46,7 @@ class _PostPageState extends State<PostPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [page(widget.postId)],
+            children: [postWidget(widget.postId)],
           ),
         ),
       ),

@@ -1,20 +1,25 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:go_router/go_router.dart';
 import 'package:news_blog/get_data/payload.dart';
+import 'package:news_blog/i18n/i18n.dart';
 import 'package:news_blog/models/payload.dart';
-import 'package:flutter/material.dart';
 
-FutureBuilder pages() {
+FutureBuilder postsWidget() {
   return FutureBuilder(
-    future: PayloadClient().getPages(),
+    future: PayloadClient().getPosts(),
     builder: (context, snapshot) {
       if (snapshot.connectionState == ConnectionState.done) {
         if (snapshot.hasError || snapshot.data!.isEmpty) {
-          return const Center(
-            child: Text('Failed to load pages', style: TextStyle(fontSize: 18)),
+          return Center(
+            child: Text(
+              AppLocale.failedToLoadPosts.getString(context),
+              style: const TextStyle(fontSize: 18),
+            ),
           );
         }
 
-        final List<PageModel> pages = snapshot.data!;
+        final List<PostModel> pages = snapshot.data!;
         return ListView.separated(
           itemBuilder: (context, index) {
             final page = pages[index];
@@ -30,7 +35,7 @@ FutureBuilder pages() {
   );
 }
 
-Widget _pageItem({required PageModel page, required BuildContext context}) {
+Widget _pageItem({required PostModel page, required BuildContext context}) {
   MediaModel media = MediaModel.fromJson(page.media);
 
   return MaterialButton(

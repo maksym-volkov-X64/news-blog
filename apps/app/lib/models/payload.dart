@@ -156,25 +156,28 @@ class MediaModel {
   };
 }
 
-class PageModel {
+class PostModel {
   final int id;
   final String title;
   final dynamic media;
+  final Map<String, dynamic> content;
   final String updatedAt;
   final String createdAt;
 
-  const PageModel({
+  const PostModel({
     required this.id,
     required this.title,
     required this.media,
+    required this.content,
     required this.updatedAt,
     required this.createdAt,
   });
 
-  factory PageModel.fromJson(Map<String, dynamic> json) => PageModel(
+  factory PostModel.fromJson(Map<String, dynamic> json) => PostModel(
     id: (json['id'] as num).toInt(),
     title: json['title'] as String,
     media: json['media'],
+    content: Map<String, dynamic>.from(json['content'] as Map),
     updatedAt: json['updatedAt'] as String,
     createdAt: json['createdAt'] as String,
   );
@@ -183,6 +186,7 @@ class PageModel {
     'id': id,
     'title': title,
     'media': media,
+    'content': content,
     'updatedAt': updatedAt,
     'createdAt': createdAt,
   };

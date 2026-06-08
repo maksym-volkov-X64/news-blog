@@ -27,6 +27,16 @@ export const productMediaMimeTypes = [...defaultGraphicsMimeTypes, 'video/webm']
 
 export const Media: CollectionConfig = {
   slug: 'media',
+  labels: {
+    singular: {
+      en: 'Media',
+      uk: 'Медіа',
+    },
+    plural: {
+      en: 'Media',
+      uk: 'Медіа',
+    },
+  },
   access: {
     read: anyAdminOrSignedInAccess,
     create: anyAdminAccess,
