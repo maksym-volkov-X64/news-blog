@@ -49,6 +49,10 @@ FutureBuilder postWidget(String? id) {
             ),
 
             SizedBox(height: 20),
+
+            LexicalRichText(json: page.content),
+
+            SizedBox(height: 30),
           ],
         );
       } else {
