@@ -231,7 +231,7 @@ class TextSpanBuilder {
         ),
         recognizer: TapGestureRecognizer()
           ..onTap = () {
-            // TODO: Додайте url_launcher пакет для відкриття посилань
+            // TODO: Add url_launcher package to open links
             // launchUrl(Uri.parse(url));
             debugPrint('Link tapped: $url');
           },
@@ -249,7 +249,7 @@ class TextSpanBuilder {
   }
 
   TextStyle _getTextStyle(int format) {
-    // Lexical використовує бітову маску для форматування тексту:
+    // Lexical uses a bit mask to format text:
     // 1: bold, 2: italic, 4: strikethrough, 8: underline, 16: code, 32: subscript, 64: superscript
 
     bool isBold = (format & 1) != 0;
