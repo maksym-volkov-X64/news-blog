@@ -1,0 +1,11 @@
+{
+  "localization": "Localization",
+  "thisIs": "This is %a package, version %a.",
+  "currentLanguage": "Current Language",
+  "fontFamily": "Font Family",
+  "localeIdentifier": "Locale Identifier",
+  "appTitle": "News Blog",
+  "pages": "Pages",
+  "page": "Page",
+  "home": "Home"
+}

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:news_blog/components/page.dart';
+import 'package:news_blog/i18n/i18n.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 
 class PostPage extends StatefulWidget {
   const PostPage({super.key, required this.title, required this.postId});
@@ -18,12 +20,21 @@ class _PostPageState extends State<PostPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        title: Text(
+          '${AppLocale.appTitle.getString(context)} - ${widget.title.toUpperCase()}',
+        ),
         title: Text('News Blog - ${widget.title.toUpperCase()}'),
         centerTitle: true,
         leading: IconButton(
           onPressed: () => GoRouter.of(context).go('/'),
           icon: const Icon(Icons.arrow_back),
         ),
+        actions: [
+          IconButton(
+            onPressed: () => GoRouter.of(context).push('/settings'),
+            icon: const Icon(Icons.settings),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Padding(
