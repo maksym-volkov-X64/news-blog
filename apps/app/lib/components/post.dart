@@ -19,8 +19,8 @@ FutureBuilder postWidget(String? id) {
           );
         }
 
-        final PostModel page = snapshot.data!;
-        MediaModel media = MediaModel.fromJson(page.media);
+        final PostModel post = snapshot.data!;
+        MediaModel media = MediaModel.fromJson(post.media);
 
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -44,13 +44,13 @@ FutureBuilder postWidget(String? id) {
             SizedBox(height: 10),
 
             Text(
-              page.title.toUpperCase(),
+              post.title.toUpperCase(),
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
 
             SizedBox(height: 20),
 
-            LexicalRichText(json: page.content),
+            LexicalRichText(json: post.content),
 
             SizedBox(height: 30),
           ],

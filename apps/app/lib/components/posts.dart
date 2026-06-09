@@ -19,14 +19,14 @@ FutureBuilder postsWidget() {
           );
         }
 
-        final List<PostModel> pages = snapshot.data!;
+        final List<PostModel> posts = snapshot.data!;
         return ListView.separated(
           itemBuilder: (context, index) {
-            final page = pages[index];
-            return _pageItem(page: page, context: context);
+            final post = posts[index];
+            return _postItem(post: post, context: context);
           },
           separatorBuilder: (context, index) => const SizedBox(height: 20),
-          itemCount: pages.length,
+          itemCount: posts.length,
         );
       } else {
         return const Center(child: CircularProgressIndicator());
@@ -35,14 +35,14 @@ FutureBuilder postsWidget() {
   );
 }
 
-Widget _pageItem({required PostModel page, required BuildContext context}) {
-  MediaModel media = MediaModel.fromJson(page.media);
+Widget _postItem({required PostModel post, required BuildContext context}) {
+  MediaModel media = MediaModel.fromJson(post.media);
 
   return MaterialButton(
     onPressed: () {
       GoRouter.of(context).pushNamed(
         'post',
-        pathParameters: {'id': page.id.toString(), 'title': page.title},
+        pathParameters: {'id': post.id.toString(), 'title': post.title},
       );
     },
     child: Column(
@@ -78,7 +78,7 @@ Widget _pageItem({required PostModel page, required BuildContext context}) {
               alignment: Alignment.bottomLeft,
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                page.title.toUpperCase(),
+                post.title.toUpperCase(),
                 style: TextStyle(
                   fontSize: 18.0,
                   fontWeight: FontWeight.w500,

@@ -32,7 +32,7 @@ class PayloadClient {
       );
 
       return (response.data['docs'] as List)
-          .map<PostModel>((page) => PostModel.fromJson(page))
+          .map<PostModel>((post) => PostModel.fromJson(post))
           .toList();
     } catch (e) {
       print('Error fetching posts: $e');
