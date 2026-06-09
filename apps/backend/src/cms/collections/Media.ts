@@ -1,5 +1,6 @@
 import type { CollectionConfig } from 'payload'
 import { anyAdminAccess, anyAdminOrSignedInAccess } from '../access'
+import { Collection } from '../types'
 
 export const defaultPhotoMimeTypes = [
   'image/jpeg',
@@ -26,7 +27,7 @@ export const flavoursMediaMimeTypes = [...defaultPhotoMimeTypes, 'image/svg+xml'
 export const productMediaMimeTypes = [...defaultGraphicsMimeTypes, 'video/webm']
 
 export const Media: CollectionConfig = {
-  slug: 'media',
+  slug: Collection.Media,
   labels: {
     singular: {
       en: 'Media',

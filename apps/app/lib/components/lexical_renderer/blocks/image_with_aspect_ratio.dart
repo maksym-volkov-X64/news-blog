@@ -1,0 +1,44 @@
+import 'package:flutter/material.dart';
+import 'package:news_blog/i18n/i18n.dart';
+import 'package:flutter_localization/flutter_localization.dart';
+
+Widget buildImageWithAspectRatioBlock(
+  BuildContext context,
+  Map<String, dynamic> node,
+) {
+  dynamic fields = node['fields'] ?? {};
+
+  String imageUrl =
+      fields['image']?['url'] ?? 'https://via.placeholder.com/150';
+
+  final String? rawAspectRatio = fields['aspectRatio']?.toString();
+  final List<int> aspectRatioParts =
+      rawAspectRatio != null && rawAspectRatio.contains('/')
+      ? rawAspectRatio
+            .split('/')
+            .map((part) => int.tryParse(part.trim()) ?? 1)
+            .toList()
+      : [16, 9];
+  final int widthPart = aspectRatioParts.isNotEmpty ? aspectRatioParts[0] : 16;
+  final int heightPart = aspectRatioParts.length > 1
+      ? (aspectRatioParts[1] == 0 ? 1 : aspectRatioParts[1])
+      : 9;
+  double aspectRatio = widthPart / heightPart;
+
+  return AspectRatio(
+    aspectRatio: aspectRatio,
+    child: Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8.0),
+        image: DecorationImage(
+          image: NetworkImage(imageUrl),
+          fit: BoxFit.cover,
+          onError: (error, stackTrace) {
+            Text(AppLocale.failedToLoadImage.getString(context));
+          },
+        ),
+        color: Colors.black,
+      ),
+    ),
+  );
+}

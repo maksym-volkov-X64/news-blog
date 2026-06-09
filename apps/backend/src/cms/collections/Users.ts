@@ -1,5 +1,5 @@
 import type { CollectionConfig } from 'payload'
-import { UserRole } from '../types'
+import { Collection, UserRole } from '../types'
 import {
   anyAdminAccess,
   anyAdminFieldAccess,
@@ -11,7 +11,7 @@ import {
 const isNotDev = process.env.NODE_ENV !== 'development'
 
 export const Users: CollectionConfig = {
-  slug: 'users',
+  slug: Collection.Users,
   labels: {
     singular: {
       en: 'User',

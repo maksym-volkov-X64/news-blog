@@ -1,4 +1,4 @@
-import 'package:news_blog/components/lexical_renderer.dart';
+import 'package:news_blog/components/lexical_renderer/lexical_renderer.dart';
 import 'package:news_blog/get_data/payload.dart';
 import 'package:news_blog/models/payload.dart';
 import 'package:flutter/material.dart';

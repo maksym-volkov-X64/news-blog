@@ -1,7 +1,11 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
+import 'package:go_router/go_router.dart';
+import 'package:news_blog/components/lexical_renderer/blocks/image_with_aspect_ratio.dart';
+import 'package:news_blog/components/lexical_renderer/link.dart';
 import 'package:news_blog/i18n/i18n.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class LexicalRichText extends StatelessWidget {
   final Map<String, dynamic> json;
@@ -19,18 +23,18 @@ class LexicalRichText extends StatelessWidget {
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: children.map((node) => _buildBlockNode(node)).toList(),
+      children: children.map((node) => _buildBlockNode(node, context)).toList(),
     );
   }
 
-  Widget _buildBlockNode(Map<String, dynamic> node) {
+  Widget _buildBlockNode(Map<String, dynamic> node, BuildContext context) {
     final type = node['type'];
 
     switch (type) {
       case 'paragraph':
         return Padding(
           padding: const EdgeInsets.only(bottom: 8.0),
-          child: _buildRichText(node, _getTextAlign(node['format'])),
+          child: _buildRichText(node, _getTextAlign(node['format']), context),
         );
       case 'heading':
         return Padding(
@@ -38,21 +42,31 @@ class LexicalRichText extends StatelessWidget {
           child: _buildRichText(
             node,
             _getTextAlign(node['format']),
+            context,
             baseStyle: _getHeadingStyle(node['tag']),
           ),
         );
       case 'list':
-        return _buildList(node);
+        return _buildList(node, context);
       case 'horizontalrule':
         return const Divider(height: 24.0, thickness: 1.0);
       case 'upload':
         return _buildUpload(node);
+      case 'block':
+        String? blockType = node['fields']?['blockType'];
+
+        switch (blockType) {
+          case 'image-with-aspect-ratio':
+            return buildImageWithAspectRatioBlock(context, node);
+          default:
+            return const SizedBox.shrink();
+        }
       default:
         return const SizedBox.shrink();
     }
   }
 
-  Widget _buildList(Map<String, dynamic> node) {
+  Widget _buildList(Map<String, dynamic> node, BuildContext context) {
     final listType = node['listType'];
     final children = List<Map<String, dynamic>>.from(node['children'] ?? []);
 
@@ -98,7 +112,10 @@ class LexicalRichText extends StatelessWidget {
                   padding: EdgeInsets.only(
                     top: listType == 'check' ? 8.0 : 2.0,
                   ),
-                  child: TextSpanBuilder(children: itemChildren).build(),
+                  child: TextSpanBuilder(
+                    children: itemChildren,
+                    context: context,
+                  ).build(),
                 ),
               ),
             ],
@@ -128,7 +145,8 @@ class LexicalRichText extends StatelessWidget {
 
   Widget _buildRichText(
     Map<String, dynamic> node,
-    TextAlign align, {
+    TextAlign align,
+    BuildContext context, {
     TextStyle? baseStyle,
   }) {
     final children = List<Map<String, dynamic>>.from(node['children'] ?? []);
@@ -136,6 +154,7 @@ class LexicalRichText extends StatelessWidget {
       width: double.infinity,
       child: TextSpanBuilder(
         children: children,
+        context: context,
         baseStyle: baseStyle,
         textAlign: align,
       ).build(),
@@ -197,9 +216,11 @@ class TextSpanBuilder {
   final List<Map<String, dynamic>> children;
   final TextStyle? baseStyle;
   final TextAlign textAlign;
+  final BuildContext context;
 
   TextSpanBuilder({
     required this.children,
+    required this.context,
     this.baseStyle,
     this.textAlign = TextAlign.left,
   });
@@ -221,20 +242,64 @@ class TextSpanBuilder {
       final linkChildren = List<Map<String, dynamic>>.from(
         node['children'] ?? [],
       );
-      final url = node['fields']?['url'] ?? '';
+      final String linkType = node['fields']?['linkType'] ?? 'custom';
+
+      dynamic internalLink = null;
+
+      if (linkType == 'internal') {
+        String? title = node['fields']?['doc']?['label'];
+        int? id = node['fields']?['doc']?['value']?['id'];
+        String? collection = getPageRoute(
+          node['fields']?['doc']?['relationTo'],
+        );
+
+        if (title != null && id != null && collection != null) {
+          internalLink = {
+            'title': title,
+            'id': id.toString(),
+            'collection': collection,
+          };
+        }
+      }
+
+      final String? url = node['fields']?['url'];
+
+      final tapRecognizer = TapGestureRecognizer()
+        ..onTap = () {
+          if (linkType == 'internal' && internalLink != null) {
+            GoRouter.of(context).pushNamed(
+              internalLink['collection'],
+              pathParameters: {
+                'id': internalLink['id'],
+                'title': internalLink['title'],
+              },
+            );
+          } else if (linkType == 'custom' && url != null) {
+            // TODO: Add url_launcher package to open links
+            launchUrl(Uri.parse(url));
+            debugPrint('Link tapped: $url');
+          }
+        };
 
       return TextSpan(
-        children: linkChildren.map((c) => _buildSpan(c)).toList(),
+        children: linkChildren.map((c) {
+          final span = _buildSpan(c);
+          if (span is TextSpan) {
+            return TextSpan(
+              text: span.text,
+              style: (span.style ?? baseStyle ?? const TextStyle()).copyWith(
+                color: Colors.blue,
+                decoration: TextDecoration.underline,
+              ),
+              recognizer: tapRecognizer,
+            );
+          }
+          return span;
+        }).toList(),
         style: const TextStyle(
           color: Colors.blue,
           decoration: TextDecoration.underline,
         ),
-        recognizer: TapGestureRecognizer()
-          ..onTap = () {
-            // TODO: Add url_launcher package to open links
-            // launchUrl(Uri.parse(url));
-            debugPrint('Link tapped: $url');
-          },
       );
     }
 

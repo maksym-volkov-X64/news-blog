@@ -1,8 +1,10 @@
 import type { CollectionConfig } from 'payload'
 import { anyAdminAccess, anyAdminOrSignedInAccess } from '../access'
+import { Collection } from '../types'
+import { getDefaultEditor } from '../editor'
 
 export const Posts: CollectionConfig = {
-  slug: 'posts',
+  slug: Collection.Posts,
   labels: {
     singular: {
       en: 'Post',
@@ -40,7 +42,7 @@ export const Posts: CollectionConfig = {
         en: 'Media',
         uk: 'Медіа',
       },
-      relationTo: 'media',
+      relationTo: Collection.Media,
       required: true,
     },
     {
@@ -50,6 +52,7 @@ export const Posts: CollectionConfig = {
         en: 'Content',
         uk: 'Контент',
       },
+      editor: getDefaultEditor(),
       required: true,
       localized: true,
     },

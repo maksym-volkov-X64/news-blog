@@ -12,6 +12,7 @@ import { buildConfig, CollectionConfig, Config, ImageSize } from 'payload'
 import { nodemailerAdapter } from '@payloadcms/email-nodemailer'
 import { s3Storage } from '@payloadcms/storage-s3'
 import { Posts } from '@/cms/collections/Posts'
+import { Collection } from '@cms/types'
 
 type GenerateFileURL = (args: {
   collection: CollectionConfig
@@ -28,7 +29,7 @@ export const generatePublicFileURL: GenerateFileURL = ({ prefix, filename }) =>
 
 const payloadConfig: Config = {
   admin: {
-    user: Users.slug,
+    user: Collection.Users,
     importMap: {
       baseDir: path.resolve(dirname),
     },

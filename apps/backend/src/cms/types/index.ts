@@ -4,3 +4,9 @@ export enum UserRole {
   ContentManager = 'content-manager',
   Customer = 'customer',
 }
+
+export enum Collection {
+  Posts = 'posts',
+  Media = 'media',
+  Users = 'users',
+}
