@@ -88,7 +88,7 @@ class LexicalRichText extends StatelessWidget {
               style: const TextStyle(fontSize: 16),
             );
           } else if (listType == 'check') {
-            marker = Checkbox(
+            marker = Checkbox.adaptive(
               value: item['checked'] ?? false,
               onChanged: null, // Read-only
               visualDensity: VisualDensity.compact,

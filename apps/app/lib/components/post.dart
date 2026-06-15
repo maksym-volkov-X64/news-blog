@@ -1,9 +1,9 @@
-import 'package:news_blog/components/lexical_renderer/lexical_renderer.dart';
-import 'package:news_blog/get_data/payload.dart';
-import 'package:news_blog/models/payload.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
+import 'package:news_blog/components/lexical_renderer/lexical_renderer.dart';
+import 'package:news_blog/get_data/payload.dart';
 import 'package:news_blog/i18n/i18n.dart';
+import 'package:news_blog/models/payload.dart';
 
 FutureBuilder postWidget(String? id) {
   return FutureBuilder(
@@ -56,7 +56,7 @@ FutureBuilder postWidget(String? id) {
           ],
         );
       } else {
-        return const Center(child: CircularProgressIndicator());
+        return const Center(child: CircularProgressIndicator.adaptive());
       }
     },
   );

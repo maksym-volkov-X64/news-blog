@@ -1,8 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:go_router/go_router.dart';
+import 'package:news_blog/components/layout.dart';
 import 'package:news_blog/components/post.dart';
 import 'package:news_blog/i18n/i18n.dart';
-import 'package:flutter_localization/flutter_localization.dart';
 
 class PostPage extends StatefulWidget {
   const PostPage({super.key, required this.title, required this.postId});
@@ -15,22 +17,53 @@ class PostPage extends StatefulWidget {
 }
 
 class _PostPageState extends State<PostPage> {
+  void _goBack() {
+    if (GoRouter.of(context).canPop()) {
+      GoRouter.of(context).pop();
+    } else {
+      GoRouter.of(context).go('/');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
+    final body = SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [postWidget(widget.postId)],
+        ),
+      ),
+    );
+
+    return layout(
+      context: context,
+      body: body,
+      iosAppBar: CupertinoNavigationBar(
+        middle: Text(
+          '${AppLocale.appTitle.getString(context)} - ${widget.title.toUpperCase()}',
+          overflow: TextOverflow.ellipsis,
+        ),
+        leading: CupertinoButton(
+          padding: EdgeInsets.zero,
+          onPressed: _goBack,
+          child: const Icon(CupertinoIcons.chevron_back),
+        ),
+        trailing: CupertinoButton(
+          padding: EdgeInsets.zero,
+          onPressed: () => GoRouter.of(context).push('/settings'),
+          child: const Icon(CupertinoIcons.settings),
+        ),
+      ),
+      androidAppBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(
           '${AppLocale.appTitle.getString(context)} - ${widget.title.toUpperCase()}',
         ),
         leading: IconButton(
-          onPressed: () {
-            if (GoRouter.of(context).canPop()) {
-              GoRouter.of(context).pop();
-            } else {
-              GoRouter.of(context).go('/');
-            }
-          },
+          onPressed: _goBack,
           icon: const Icon(Icons.arrow_back),
         ),
         actions: [
@@ -39,16 +72,6 @@ class _PostPageState extends State<PostPage> {
             icon: const Icon(Icons.settings),
           ),
         ],
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [postWidget(widget.postId)],
-          ),
-        ),
       ),
     );
   }
