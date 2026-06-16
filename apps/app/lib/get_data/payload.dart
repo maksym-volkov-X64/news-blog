@@ -1,7 +1,9 @@
 import 'package:dio/dio.dart';
+import 'package:news_blog/env/constant.dart';
 import 'package:news_blog/env/env.dart';
 import 'package:news_blog/models/payload.dart';
 import 'package:flutter_localization/flutter_localization.dart';
+import 'package:news_blog/template/posts.dart';
 
 class PayloadClient {
   final Options _options = _getOptions();
@@ -25,19 +27,23 @@ class PayloadClient {
   Future<List<PostModel>> getPosts() async {
     final String languageCode = _getLanguageCode();
 
-    try {
-      Response response = await Dio().get(
-        '$_apiUrl/posts?locale=$languageCode',
-        options: _options,
-      );
+    if (isProd) {
+      return postsTemplate;
+    } else {
+      try {
+        Response response = await Dio().get(
+          '$_apiUrl/posts?locale=$languageCode',
+          options: _options,
+        );
 
-      return (response.data['docs'] as List)
-          .map<PostModel>((post) => PostModel.fromJson(post))
-          .toList();
-    } catch (e) {
-      print('Error fetching posts: $e');
+        return (response.data['docs'] as List)
+            .map<PostModel>((post) => PostModel.fromJson(post))
+            .toList();
+      } catch (e) {
+        print('Error fetching posts: $e');
 
-      return [];
+        return [];
+      }
     }
   }
 
@@ -46,17 +52,21 @@ class PayloadClient {
 
     final String languageCode = _getLanguageCode();
 
-    try {
-      Response response = await Dio().get(
-        '$_apiUrl/posts/$id?locale=$languageCode',
-        options: _options,
-      );
+    if (isProd) {
+      return postTemplate;
+    } else {
+      try {
+        Response response = await Dio().get(
+          '$_apiUrl/posts/$id?locale=$languageCode',
+          options: _options,
+        );
 
-      return PostModel.fromJson(response.data);
-    } catch (e) {
-      print('Error fetching post: $e');
+        return PostModel.fromJson(response.data);
+      } catch (e) {
+        print('Error fetching post: $e');
 
-      return null;
+        return null;
+      }
     }
   }
 }

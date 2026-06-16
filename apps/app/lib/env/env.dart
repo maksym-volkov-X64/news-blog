@@ -8,4 +8,7 @@ abstract class Env {
 
   @EnviedField(varName: 'PAYLOAD_API_KEY', obfuscate: true)
   static final String payloadApiKey = _Env.payloadApiKey;
+
+  @EnviedField(varName: 'STAGE', obfuscate: true)
+  static final String stage = _Env.stage;
 }
