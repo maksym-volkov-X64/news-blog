@@ -1,0 +1,48 @@
+name: Build iOS Simulator (Mono-repo)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: "main"
+
+      - name: Create .env file from GitHub Secrets
+        # We take the ENV_FILE secret and write its contents to the file at the required path
+        run: |
+          echo "${{ secrets.ENV_FILE }}" > apps/app/.env
+
+      - name: Install dependencies
+        run: |
+          cd apps/app
+          flutter pub get
+
+      - name: Generate env (build_runner)
+        run: |
+          cd apps/app
+          dart run build_runner build --delete-conflicting-outputs
+
+      - name: Build iOS Simulator
+        run: |
+          cd apps/app
+          flutter build ios --simulator
+
+      - name: Package into ZIP
+        run: |
+          cd apps/app/build/ios/iphonesimulator
+          zip -r Runner.zip Runner.app
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ios-simulator-build
+          path: apps/app/build/ios/iphonesimulator/Runner.zip
