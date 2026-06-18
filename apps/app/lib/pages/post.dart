@@ -27,19 +27,17 @@ class _PostPageState extends State<PostPage> {
 
   @override
   Widget build(BuildContext context) {
-    final body = SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [postWidget(widget.postId)],
-        ),
-      ),
+    final body = Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SizedBox(height: 16.0),
+        PostWidget(id: widget.postId),
+        const SizedBox(height: 16.0),
+      ],
     );
 
-    return layout(
-      context: context,
+    return Layout(
       body: body,
       iosAppBar: CupertinoNavigationBar(
         middle: Text(

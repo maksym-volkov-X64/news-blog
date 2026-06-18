@@ -16,20 +16,26 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    final content = Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          AppLocale.pages.getString(context),
-          style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-        ),
-        const SizedBox(height: 30),
-        Expanded(child: postsWidget()),
-      ],
+    final content = SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(height: 16.0),
+
+          Text(
+            AppLocale.pages.getString(context),
+            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 30),
+
+          PostsWidget(),
+
+          const SizedBox(height: 16.0),
+        ],
+      ),
     );
 
-    return layout(
-      context: context,
+    return Layout(
       body: content,
       iosAppBar: CupertinoNavigationBar(
         middle: Text(AppLocale.appTitle.getString(context)),

@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:go_router/go_router.dart';
+import 'package:news_blog/components/image.dart';
 import 'package:news_blog/components/lexical_renderer/blocks/image_with_aspect_ratio.dart';
 import 'package:news_blog/components/lexical_renderer/link.dart';
 import 'package:news_blog/i18n/i18n.dart';
@@ -57,7 +58,7 @@ class LexicalRichText extends StatelessWidget {
 
         switch (blockType) {
           case 'image-with-aspect-ratio':
-            return buildImageWithAspectRatioBlock(context, node);
+            return ImageWithAspectRatioBlock(node: node);
           default:
             return const SizedBox.shrink();
         }
@@ -133,11 +134,14 @@ class LexicalRichText extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 16.0),
-      child: Image.network(
-        url,
-        width: double.infinity,
-        fit: BoxFit.cover,
-        errorBuilder: (context, error, stackTrace) =>
+      child: ImageWidget(
+        url: url,
+        containerBuilder: (context, imageProvider) => Image(
+          image: imageProvider,
+          fit: BoxFit.cover,
+          width: double.infinity,
+        ),
+        errorContainerBuilder: (context, imageProvider) =>
             Text(AppLocale.failedToLoadImage.getString(context)),
       ),
     );

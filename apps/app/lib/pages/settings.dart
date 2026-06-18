@@ -28,6 +28,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget build(BuildContext context) {
     final content = Column(
       children: [
+        const SizedBox(height: 16.0),
+
         Row(
           children: [
             LanguageButton(
@@ -62,11 +64,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
           title: AppLocale.localeIdentifier.getString(context),
           content: _localization.currentLocale.localeIdentifier,
         ),
+        const SizedBox(height: 16.0),
       ],
     );
 
-    return layout(
-      context: context,
+    return Layout(
       body: content,
       iosAppBar: CupertinoNavigationBar(
         middle: Text(AppLocale.localization.getString(context)),
