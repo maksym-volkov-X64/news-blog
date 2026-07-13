@@ -8,15 +8,13 @@ import fs from "fs";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+const payloadGeneratedTypePath =
+  "apps/backend/src/cms/types/generated-types.ts";
+const flutterTypesPath = "apps/app/lib/models/payload.dart";
+
 export const rootDir = path.resolve(__dirname, "../../..");
-export const inputPath = path.join(
-  rootDir,
-  "apps/backend/src/cms/types/generated-types.ts",
-);
-export const outputPath = path.join(
-  rootDir,
-  "apps/app/lib/models/payload.dart",
-);
+export const inputPath = path.join(rootDir, payloadGeneratedTypePath);
+export const outputPath = path.join(rootDir, flutterTypesPath);
 
 export function runGenerate(): void {
   const project = new Project({
@@ -32,7 +30,7 @@ export function runGenerate(): void {
   fs.writeFileSync(outputPath, dartCode, "utf-8");
 
   console.log(
-    `[type-bridge] Generated ${classes.length} classes → apps/app/lib/models/payload.dart`,
+    `[type-bridge] Generated ${classes.length} classes → ${flutterTypesPath}`,
   );
   for (const cls of classes) {
     console.log(`  • ${cls.name} (${cls.fields.length} fields)`);
